@@ -5,8 +5,12 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.1'
 # Use sqlite3 as the database for Active Records in development
 gem 'sqlite3',  group: :development
+
+## Production Gems
 # Use postgres as the database for Active Records in production
 gem 'pg',  group: :production
+gem 'rails_12factor', group: :production
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -18,6 +22,7 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # Use Devise for user auth and role based permissions
 gem 'devise'
+
 
 # Use haml instead of erb
 gem 'haml-rails'
