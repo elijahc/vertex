@@ -27,9 +27,10 @@
           <% if current_user %>
             <li class="active"></li>
             <li class="has-dropdown">
-              <a href="/user/<%= current_user.id %>"><%= "#{current_user.first_name} #{current_user.last_name}" %></a>
+              <a href=""><%= "#{current_user.first_name} #{current_user.last_name}" %></a>
               <ul class="dropdown">
-                <li><a href="#">Profile</a></li>
+                <li><a href="/users/<%= current_user.id %>">Profile</a></li>
+                <li><a href="/jobs">Jobs</a></li>
                 <li><a href="/sign_out">Logout</a></li>
               </ul>
             </li>
