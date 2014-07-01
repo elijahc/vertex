@@ -1,4 +1,4 @@
-= form_for @job do |f|
+= nested_form_for @job, :html=>{ :multipart=>true } do |f|
   - if @job.errors.any?
     #error_explanation
       %h2= "#{pluralize(@job.errors.count, "error")} prohibited this job from being saved:"
@@ -6,14 +6,46 @@
         - @job.errors.full_messages.each do |msg|
           %li= msg
 
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :job_type
-    = f.text_field :job_type
-  .field
-    = f.label :spec
-    = f.text_field :spec
-  .actions
-    = f.submit 'Save'
+  .row
+    .large-12.columns
+      = f.label :name
+      = f.text_field :name
+  .row
+    .large-12.columns
+      = f.label :description
+      = f.text_area :description
+  .row
+    .large-12.columns
+      = f.label :core
+      = f.file_field :core
+  .row
+    .large-6.columns
+      %fieldset
+        %legend= "Dependencies"
+        = f.fields_for :dependencies, @job.dependencies_for_form do |dep|
+          = dep.label :description
+          = dep.text_field :description
+          = dep.label :library
+          = dep.file_field :lib
+          = dep.link_to_remove "Remove this dependency"
+      .field
+        = f.link_to_add "Add a dependency", :dependencies
+    .large-6.columns
+      %fieldset
+        %legend= "Prompts"
+
+        = f.fields_for :prompts, @job.prompts_for_form do |prompt|
+          .field
+            = prompt.label :prompt_label
+            = prompt.text_field :label
+          .field
+            = prompt.label :prompt_type
+            = prompt.select :field_type, options_for_select(Prompt.field_types.to_a.map{|a| a[1]=a[0]})
+
+            = prompt.link_to_remove "Remove this prompt"
+        .field
+          = f.link_to_add "Add a prompt", :prompts
+  .row
+    .large-12.columns
+      .actions
+      = f.submit 'Save'

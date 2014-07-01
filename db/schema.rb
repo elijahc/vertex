@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140626063923) do
+ActiveRecord::Schema.define(version: 20140627030706) do
+
+  create_table "dependencies", force: true do |t|
+    t.text     "description"
+    t.string   "lib"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "dependencies", ["attachable_id", "attachable_type"], name: "index_dependencies_on_attachable_id_and_attachable_type"
 
   create_table "jobs", force: true do |t|
     t.string   "name"
@@ -19,11 +30,21 @@ ActiveRecord::Schema.define(version: 20140626063923) do
     t.string   "spec"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "core"
+    t.text     "description"
   end
 
   create_table "jobs_users", id: false, force: true do |t|
     t.integer "job_id"
     t.integer "user_id"
+  end
+
+  create_table "prompts", force: true do |t|
+    t.string   "label"
+    t.integer  "field_type"
+    t.integer  "job_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|

@@ -16,7 +16,22 @@ class JobsController < ApplicationController
   # GET /jobs/1/run
   def run
     @job = Job.where(id: params[:id]).first
+  end
 
+  def execute
+    @job = Job.where(id: params[:id]).first
+
+    # Queue up the job
+    # job_class = Module.const_get(job_spec['class'])
+    # uuid      = job_class.create(job_params)
+
+    sleep 2
+    if uuid
+      redirect "/job_monitor/#{uuid}"
+    else
+      # flash[:error] = "Executing Job #{@job.name} failed"
+      redirect "/jobs"
+    end
   end
 
   # GET /jobs/new
@@ -28,6 +43,12 @@ class JobsController < ApplicationController
   def edit
   end
 
+  def share_to
+    @job  = Job.where(id: params[:job_id])
+    @user = User.where(id: params[:user_id])
+    @user.jobs << @job
+  end
+
   # POST /jobs
   # POST /jobs.json
   def create
@@ -37,6 +58,7 @@ class JobsController < ApplicationController
       if @job.save
         format.html { redirect_to @job, notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
+        current_user.jobs << @job
       else
         format.html { render :new }
         format.json { render json: @job.errors, status: :unprocessable_entity }
@@ -76,6 +98,12 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:name, :job_type, :spec)
+      params.require(:job).permit(:name,
+                                  :job_type,
+                                  :spec,
+                                  :description,
+                                  :core,
+                                  dependencies_attributes: [:id, :description, :lib, :_destroy],
+                                  prompts_attributes: [:id, :label, :field_type, :_destroy])
     end
 end

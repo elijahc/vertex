@@ -9,6 +9,8 @@ gem 'foreman'
 gem 'thin'
 # Use Foundation as a frontend
 gem 'foundation-rails'
+# Use nested_form for handling polymorphic job/dependency relationship
+gem 'nested_form'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -29,7 +31,11 @@ gem 'devise'
 gem 'omniauth-google-oauth2'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
-
+# Carrierwave for ephemeral upload management and background processing
+gem 'carrierwave'
+gem 'carrierwave_backgrounder'
+# Sidekiq for background, async job processing provided by redis
+gem 'sidekiq'
 
 ### Development gems ###
 # Use sqlite3 as the database for Active Records in development

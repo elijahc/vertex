@@ -4,10 +4,12 @@ Rails.application.routes.draw do
 
   resources :jobs
 
-  get '/jobs/:id/run', to: 'jobs#run', as: 'run_job'
+  get   '/jobs/:id/run',    to: 'jobs#run',     as: 'run_job'
+  post  '/jobs/:id/run',    to: 'jobs#execute', as: 'execute_job'
 
   resources :users
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  get   '/users/:id/jobs',  to: 'users#jobs',   as: 'user_jobs'
 
   devise_scope :user do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session

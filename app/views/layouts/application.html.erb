@@ -30,7 +30,7 @@
               <a href=""><%= "#{current_user.first_name} #{current_user.last_name}" %></a>
               <ul class="dropdown">
                 <li><a href="/users/<%= current_user.id %>">Profile</a></li>
-                <li><a href="/jobs">Jobs</a></li>
+                <li><a href="/users/<%= current_user.id %>/jobs">Jobs</a></li>
                 <li><a href="/sign_out">Logout</a></li>
               </ul>
             </li>

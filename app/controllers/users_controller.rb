@@ -61,6 +61,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def jobs
+    @jobs = Job.all.select{|j| j.users.include?(current_user)}
+    render 'jobs/index'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
