@@ -12,7 +12,7 @@
   - @jobs.each do |job|
     %tr
       %td= job.name
-      %td= job.core.file.identifier
+      %td= job.core.file.identifier if job.core.file
       %td
         %ul
           - job.dependencies.each do |dep|
