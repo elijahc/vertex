@@ -15,7 +15,7 @@ class JobsController < ApplicationController
 
   # GET /jobs/1/run
   def run
-    @job = Job.where(id: params[:id]).first
+    @job = Job.find(params[:id])
   end
 
   def execute

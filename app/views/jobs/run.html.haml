@@ -1,1 +1,6 @@
-%h2 Running job: #{@job.name}
+= form_tag "job/#{@job.id}/execute", method: "post", html: {:multipart=>true} do
+  - @job.prompts.each do |prompt|
+    .row
+      .large-12.columns
+        = label_tag prompt.label
+        = send("#{prompt.field_type}_tag", prompt.label)

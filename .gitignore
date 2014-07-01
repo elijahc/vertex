@@ -14,3 +14,9 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore redis local storage file
+*.rdb
+
+# Ignore vim's cached files still being edited
+*.swp

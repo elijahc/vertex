@@ -35,20 +35,24 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'carrierwave'
 gem 'carrierwave_backgrounder'
 # Sidekiq for background, async job processing provided by redis
-gem 'sidekiq'
+gem 'sidekiq', '~> 3.0'
+gem 'sidekiq-status'
+
 
 ### Development gems ###
+gem 'awesome_print', group: :development
 # Use sqlite3 as the database for Active Records in development
-gem 'sqlite3',  group: :development
+gem 'sqlite3', group: :development
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
+gem 'spring', group: :development
+# Use Rspec for testing
+gem 'rspec-rails', group: [:development, :test]
 
 
 ### Production Gems ###
 # Use postgres as the database for Active Records in production
 gem 'pg',  group: :production
 gem 'rails_12factor', group: :production
-
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
