@@ -1,5 +1,6 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /jobs
   # GET /jobs.json
@@ -16,12 +17,24 @@ class JobsController < ApplicationController
   # GET /jobs/1/run
   def run
     @job = Job.find(params[:id])
+    @run = Run.new
   end
 
   def execute
-    @job = Job.where(id: params[:id]).first
+    @job = Job.find(params[:id])
 
+    ap params
     # Queue up the job
+    @job_run = JobClosure.new
+    @job.prompts.each do |p|
+      prompt_value = PromptValue.create({job_closure: @job_closure,
+                                      prompt: p,
+                                      value: params[p.label]})
+
+      #@job_run.
+    end
+
+    Asylum.perform_async(options)
     # job_class = Module.const_get(job_spec['class'])
     # uuid      = job_class.create(job_params)
 
@@ -102,8 +115,8 @@ class JobsController < ApplicationController
                                   :job_type,
                                   :spec,
                                   :description,
-                                  :core,
-                                  dependencies_attributes: [:id, :description, :lib, :_destroy],
+                                  :core_id,
+                                  :parser,
                                   prompts_attributes: [:id, :label, :field_type, :_destroy])
     end
 end

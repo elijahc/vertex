@@ -1,0 +1,25 @@
+%h1 Listing runs
+
+%table
+  %tr
+    %th Run ID
+    %th Job Name
+    %th Status
+    %th
+    %th
+    %th
+    %th
+
+  - @runs.each do |run|
+    %tr
+      %td= run.id
+      %td= link_to run.job.name, job_path(run.job_id)
+      %td= run.status
+      %td= link_to 'Start', start_run_path(run)
+      %td= link_to 'Show',  run
+      %td= link_to 'Edit',  edit_run_path(run)
+      %td= link_to 'Destroy', run, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Run', new_run_path

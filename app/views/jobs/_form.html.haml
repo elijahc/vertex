@@ -16,21 +16,14 @@
       = f.text_area :description
   .row
     .large-12.columns
-      = f.label :core
-      = f.file_field :core
+      = f.label   :core
+      = f.select  :core_id, options_from_collection_for_select(Core.all, :id, :class_name)
   .row
-    .large-6.columns
-      %fieldset
-        %legend= "Dependencies"
-        = f.fields_for :dependencies, @job.dependencies_for_form do |dep|
-          = dep.label :description
-          = dep.text_field :description
-          = dep.label :library
-          = dep.file_field :lib
-          = dep.link_to_remove "Remove this dependency"
-      .field
-        = f.link_to_add "Add a dependency", :dependencies
-    .large-6.columns
+    .large-12.columns
+      = f.label   :parser
+      = f.select  :parser, options_for_select(Dir.glob('./lib/pipeline/parser/*').map{|p| p.match(/parser\/(.+_parser)\.rb/); [$1.camelize, $1.camelize] if $1}.compact)
+  .row
+    .large-12.columns
       %fieldset
         %legend= "Prompts"
 
@@ -40,7 +33,7 @@
             = prompt.text_field :label
           .field
             = prompt.label :prompt_type
-            = prompt.select :field_type, options_for_select(Prompt.field_types.to_a.map{|a| a[1]=a[0]})
+            = prompt.select :field_type, options_for_select(Prompt.field_types.to_a.map{|a| a[1]=a[0]}, prompt.object.field_type)
 
             = prompt.link_to_remove "Remove this prompt"
         .field
@@ -48,4 +41,4 @@
   .row
     .large-12.columns
       .actions
-      = f.submit 'Save'
+        = f.submit 'Create'

@@ -4,7 +4,8 @@
   %tr
     %th Name
     %th Core Process
-    %th Dependencies
+    %th Parser
+    %th Prompts
     %th
     %th
     %th
@@ -12,11 +13,13 @@
   - @jobs.each do |job|
     %tr
       %td= job.name
-      %td= job.core.file.identifier if job.core.file
+      %td= job.core.class_name if job.core
+      %td= job.parser
       %td
         %ul
-          - job.dependencies.each do |dep|
-            %li=  dep.lib.file.identifier
+          - job.prompts.each do |prompt|
+            %li= prompt.label
+
       %td= link_to 'Run', run_job_path(job)
       %td= link_to 'Share', "/jobs/#{job.id}/share_to/user/"
       %td= link_to 'Edit', edit_job_path(job)

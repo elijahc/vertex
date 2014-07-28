@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140627030706) do
+ActiveRecord::Schema.define(version: 20140721171550) do
+
+  create_table "bsi_accounts", force: true do |t|
+    t.string   "username"
+    t.binary   "password"
+    t.binary   "anfangvektor"
+    t.boolean  "verified"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cores", force: true do |t|
+    t.string   "class_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "dependencies", force: true do |t|
     t.text     "description"
@@ -28,9 +43,10 @@ ActiveRecord::Schema.define(version: 20140627030706) do
     t.string   "name"
     t.string   "job_type"
     t.string   "spec"
+    t.integer  "core_id"
+    t.string   "parser"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "core"
     t.text     "description"
   end
 
@@ -39,9 +55,29 @@ ActiveRecord::Schema.define(version: 20140627030706) do
     t.integer "user_id"
   end
 
+  create_table "prompt_values", force: true do |t|
+    t.string   "value"
+    t.string   "value_type"
+    t.string   "file"
+    t.integer  "prompt_id"
+    t.integer  "run_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "prompt_values", ["prompt_id"], name: "index_prompt_values_on_prompt_id"
+  add_index "prompt_values", ["run_id"], name: "index_prompt_values_on_run_id"
+
   create_table "prompts", force: true do |t|
-    t.string   "label"
     t.integer  "field_type"
+    t.string   "label"
+    t.integer  "job_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "runs", force: true do |t|
+    t.string   "uuid"
     t.integer  "job_id"
     t.datetime "created_at"
     t.datetime "updated_at"

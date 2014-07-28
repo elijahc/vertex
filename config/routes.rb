@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
 
+  resources :cores
+
+  resources :runs
+
   root to: "home#index"
 
   resources :jobs
 
   get   '/jobs/:id/run',    to: 'jobs#run',     as: 'run_job'
-  post  '/jobs/:id/run',    to: 'jobs#execute', as: 'execute_job'
+  post  '/jobs/:id/execute',to: 'runs#create',  as: 'execute_job'
+
+  get  '/run/:id/start',to: 'runs#start',  as: 'start_run'
 
   resources :users
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }

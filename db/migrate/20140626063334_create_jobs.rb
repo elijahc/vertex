@@ -4,6 +4,8 @@ class CreateJobs < ActiveRecord::Migration
       t.string :name
       t.string :job_type
       t.string :spec
+      t.references :core
+      t.string    :parser
 
       t.timestamps
     end

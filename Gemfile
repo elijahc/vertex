@@ -38,6 +38,14 @@ gem 'carrierwave_backgrounder'
 gem 'sidekiq', '~> 3.0'
 gem 'sidekiq-status'
 
+gem 'rbc'
+gem 'etl-pipeline', group: :development
+gem 'bsi-pipeline', group: :development
+gem 'roo'
+gem 'chronic'
+gem 'resque'
+gem 'resque-status'
+gem 'gibberish'
 
 ### Development gems ###
 gem 'awesome_print', group: :development
@@ -65,4 +73,3 @@ gem 'rails_12factor', group: :production
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-

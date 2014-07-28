@@ -1,0 +1,27 @@
+.row
+  .large-12.columns
+    %table
+      %tr
+        %th UUID
+        %th Job
+        %th % Complete
+        %th Last Message
+        %th Status
+      %tr
+        %td= @run.uuid
+        %td= @run.job.name
+        %td= Sidekiq::Status::pct_complete @run.uuid
+        %td= Sidekiq::Status::at @run.uuid
+        %td= Sidekiq::Status::status @run.uuid
+.row
+  .large-12.columns
+    %p#notice= notice
+
+    %pre
+      = "options: #{@run.inputs.ai :plain => true}"
+
+.row
+  .large-12.columns
+    = link_to 'Edit', edit_run_path(@run)
+    \|
+    = link_to 'Back', runs_path

@@ -4,12 +4,18 @@
   %b Name:
   = @job.name
 %p
-  %b Job type:
-  = @job.job_type
+  %b Core:
+  = @job.core
 %p
-  %b Spec:
-  = @job.spec
+  %b Parser:
+  = @job.parser
+
+%p
+  %b Prompts:
+  %ul
+    - @job.prompts.each do |p|
+      %li= "#{p.label} (#{p.field_type})"
 
 = link_to 'Edit', edit_job_path(@job)
 \|
-= link_to 'Back', jobs_path
+= link_to 'Jobs list', jobs_path

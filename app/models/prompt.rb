@@ -23,7 +23,9 @@ class Prompt < ActiveRecord::Base
     :select_field
   ]
 
-  belongs_to :job
   enum field_type: FIELD_TYPES
+
+  belongs_to  :job
+  has_many    :prompt_values
 
 end

@@ -8,4 +8,8 @@
 e = User.all.first
 j = Job.create(name: 'Test Job', job_type: 'test', spec: '/dev/null')
 
-e.jobs << j
+cores = ['BsiSpecimenPipeline', 'Asylum', 'SleepJob']
+
+(cores - Core.all.map{|c| c.class_name}).each do |c|
+  Core.create({class_name: c})
+end

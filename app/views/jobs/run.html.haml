@@ -1,6 +1,20 @@
-= form_tag "job/#{@job.id}/execute", method: "post", html: {:multipart=>true} do
+.row
+  .large-12.columns
+    %h3 #{@job.name} parameters
+= form_for @run, html: {:multipart=>true} do |f|
+  = f.hidden_field :job_id, :value => @job.id
+  = f.hidden_field :user_id, :value => current_user.id
   - @job.prompts.each do |prompt|
     .row
       .large-12.columns
         = label_tag prompt.label
         = send("#{prompt.field_type}_tag", prompt.label)
+  .row
+    .large-12.columns
+      = f.submit 'Start Job'
+
+//= nested_form_for @run, html: {:multipart=>true} do |f|
+//  = f.hidden_field :user_id, current_user.id
+//  - f.fields_for :prompt_values, @job.prompts.map{|prompt| PromptValue.new(prompt)} do |pv|
+//    = pv.label :label
+//    = send("#{p.object.field_type}_tag") :value
