@@ -33,6 +33,7 @@ class BsiSpecimenPipeline < Pipeline::Base
 
     at 20, 'Parsing...'
     specimens = parse(file_path, options)
+
     at 60, 'Importing...'
     import(specimens, options)
 

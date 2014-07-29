@@ -1,4 +1,102 @@
 require 'csv'
+module Formatters
+  def format_date(date)
+    Chronic.parse(date).strftime('%m/%d/%Y %R')
+  end
+
+  def format_time_point(timepoint)
+    # Fixed timepoint translation idioms
+    idioms = [
+      {:regex => Regexp.new(/Surgery/i), :out => "SURG"},
+      {:regex => Regexp.new(/Pre\W*Trial\W*Diagnostic\W*Material/i), :out => "PTDM"},
+      {:regex => Regexp.new(/Baseline/i), :out => "BSL"},
+      {:regex => Regexp.new(/Step\s*(\d)/i),  :out => "STEP = :X"},
+      {:regex => Regexp.new(/Cycle\s*(\d)/i), :out => "CYCLE = :X"},
+      {:regex => Regexp.new(/Year\s*(\d)/i),  :out => "Y = :X"},
+      {:regex => Regexp.new(/Month\s*(\d)/i), :out => "M = :X"},
+      {:regex => Regexp.new(/Week\s*(\d)/i),  :out => "WK = :X"},
+      {:regex => Regexp.new(/Day\s*(\d)/i),   :out => "D = :X"},
+      {:regex => Regexp.new(/Hour\s*(\d)/i),  :out => "HR = :X"}
+    ]
+
+    # Split the timepoint string by its enumerator, usuallly a comma
+    tokens = timepoint.split(/,/)
+
+    # Iterate first by idioms, then by tokens, aggregating by idioms
+    timepoint_attributes = []
+    idioms.each do |idiom|
+      tokens.each do |token|
+        if token.match(idiom[:regex])
+          timepoint_attributes << idiom[:out].gsub(':X', $1.to_s)
+        end
+      end
+    end
+
+    timepoint_attributes.compact.join(';')
+  end
+
+  def format_vacutainer(vacutainer)
+    case vacutainer.to_s
+    when /paxgene\s*(dna)/i
+      return "PAXGENE #{$1}"
+    when /N\/A/i
+      return ''
+    else
+      return vacutainer.to_s
+    end
+  end
+
+  def format_sample_modifiers(modifiers)
+    bfs = ''
+    modifiers.each do |k,v|
+      unless v.empty?
+        bfs << "#{k.to_s.capitalize} = #{v.to_s}, "
+      end
+    end
+    bfs.chop.chop
+  end
+
+  def format_mat_type(type)
+    case type.to_s
+    when /^H\s*&*\s*E$/
+      return 'SLDTS'
+    when /^PLASMA$/i
+      return 'PLS'
+    when /^serum$/i
+      return 'Blood Serum'
+    when /^CELLS$/i
+      return 'BUFRED'
+    when /^Buffy Cells$/i
+      return 'BUFRED'
+    when /^DNA$/i
+      return 'WB'
+    when /stained slide/i
+      return 'SLDTS'
+    when /whole\sblood/i
+      return 'WB'
+    when /unstained slide/i
+      return 'SLTDU'
+    when /(BLK|ffpe)/i
+      return 'BLK'
+    else
+      return type.to_s
+    end
+  end
+
+  # Format Stain type
+  def format_field_268(stain)
+    case stain.to_s
+    when 'N/A'
+      return ''
+    else
+      return stain.to_s
+    end
+  end
+
+  alias format_date_drawn format_date
+  alias format_date_received format_date
+end
+
 class Pipeline::Parser::E2108Parser
   include Pipeline::BSI::Models
 
@@ -40,7 +138,7 @@ class Pipeline::Parser::E2108Parser
     ]
 
     CSV.foreach(file_path, :headers => true) do |csv|
-      s = Specimen.new(options['model_options'])
+      s = Specimen.new(options['model_options']).extend Formatters
       print "Reading row: #{counter}                 \r"
 
       #
@@ -131,19 +229,7 @@ class Pipeline::Parser::E2108Parser
       counter += 1
     end #CSV.foreach
 
-    if @failed_rows.first
-      columns = @failed_rows.first.keys
-      puts "Failed rows: #{@failed_rows.length}"
-      s=CSV.generate do |csv|
-        csv << columns
-        @failed_rows.each do |x|
-          csv << x.values
-        end
-      end
-      File.write('./tmp/failed_rows.csv', s)
-    end
-
-    @specimens.uniq{|s| s.current_label}
+    @specimens
   end
 
 end

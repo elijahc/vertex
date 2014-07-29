@@ -5,10 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-e = User.all.first
-j = Job.create(name: 'Test Job', job_type: 'test', spec: '/dev/null')
-
-cores = ['BsiSpecimenPipeline', 'Asylum', 'SleepJob']
+cores = ['BsiSpecimenPipeline', 'SleepJob']
 
 (cores - Core.all.map{|c| c.class_name}).each do |c|
   Core.create({class_name: c})

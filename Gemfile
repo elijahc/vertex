@@ -35,7 +35,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'carrierwave'
 gem 'carrierwave_backgrounder'
 # Sidekiq for background, async job processing provided by redis
-gem 'sidekiq', '~> 3.0'
+gem 'sidekiq', '3.0.2'
 gem 'sidekiq-status'
 
 gem 'rbc'
