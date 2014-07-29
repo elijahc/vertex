@@ -12,9 +12,3 @@
   .row
     .large-12.columns
       = f.submit 'Start Job'
-
-//= nested_form_for @run, html: {:multipart=>true} do |f|
-//  = f.hidden_field :user_id, current_user.id
-//  - f.fields_for :prompt_values, @job.prompts.map{|prompt| PromptValue.new(prompt)} do |pv|
-//    = pv.label :label
-//    = send("#{p.object.field_type}_tag") :value

@@ -20,33 +20,6 @@ class JobsController < ApplicationController
     @run = Run.new
   end
 
-  def execute
-    @job = Job.find(params[:id])
-
-    ap params
-    # Queue up the job
-    @job_run = JobClosure.new
-    @job.prompts.each do |p|
-      prompt_value = PromptValue.create({job_closure: @job_closure,
-                                      prompt: p,
-                                      value: params[p.label]})
-
-      #@job_run.
-    end
-
-    Asylum.perform_async(options)
-    # job_class = Module.const_get(job_spec['class'])
-    # uuid      = job_class.create(job_params)
-
-    sleep 2
-    if uuid
-      redirect "/job_monitor/#{uuid}"
-    else
-      # flash[:error] = "Executing Job #{@job.name} failed"
-      redirect "/jobs"
-    end
-  end
-
   # GET /jobs/new
   def new
     @job = Job.new
@@ -69,9 +42,10 @@ class JobsController < ApplicationController
 
     respond_to do |format|
       if @job.save
+        current_user.jobs << @job
+        @job.add_required_prompts_from_core
         format.html { redirect_to @job, notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
-        current_user.jobs << @job
       else
         format.html { render :new }
         format.json { render json: @job.errors, status: :unprocessable_entity }
@@ -84,6 +58,7 @@ class JobsController < ApplicationController
   def update
     respond_to do |format|
       if @job.update(job_params)
+        @job.add_required_prompts_from_core
         format.html { redirect_to @job, notice: 'Job was successfully updated.' }
         format.json { render :show, status: :ok, location: @job }
       else

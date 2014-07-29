@@ -1,44 +1,46 @@
-= nested_form_for @job, :html=>{ :multipart=>true } do |f|
-  - if @job.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@job.errors.count, "error")} prohibited this job from being saved:"
-      %ul
-        - @job.errors.full_messages.each do |msg|
-          %li= msg
+.row
+  .large-12.columns
+    = nested_form_for @job, :html=>{ :multipart=>true } do |f|
+      - if @job.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@job.errors.count, "error")} prohibited this job from being saved:"
+          %ul
+            - @job.errors.full_messages.each do |msg|
+              %li= msg
 
-  .row
-    .large-12.columns
-      = f.label :name
-      = f.text_field :name
-  .row
-    .large-12.columns
-      = f.label :description
-      = f.text_area :description
-  .row
-    .large-12.columns
-      = f.label   :core
-      = f.select  :core_id, options_from_collection_for_select(Core.all, :id, :class_name)
-  .row
-    .large-12.columns
-      = f.label   :parser
-      = f.select  :parser, options_for_select(Dir.glob('./lib/pipeline/parser/*').map{|p| p.match(/parser\/(.+_parser)\.rb/); [$1.camelize, $1.camelize] if $1}.compact)
-  .row
-    .large-12.columns
-      %fieldset
-        %legend= "Prompts"
+      .row
+        .large-12.columns
+          = f.label :name
+          = f.text_field :name
+      .row
+        .large-12.columns
+          = f.label :description
+          = f.text_area :description
+      .row
+        .large-12.columns
+          = f.label   :core
+          = f.select  :core_id, options_from_collection_for_select(Core.all, :id, :class_name)
+      .row
+        .large-12.columns
+          = f.label   :parser
+          = f.select  :parser, options_for_select(Dir.glob('./lib/pipeline/parser/*').map{|p| p.match(/parser\/(.+_parser)\.rb/); [$1.camelize, $1.camelize] if $1}.compact)
+      .row
+        .large-12.columns
+          %fieldset
+            %legend= "Prompts"
 
-        = f.fields_for :prompts, @job.prompts_for_form do |prompt|
-          .field
-            = prompt.label :prompt_label
-            = prompt.text_field :label
-          .field
-            = prompt.label :prompt_type
-            = prompt.select :field_type, options_for_select(Prompt.field_types.to_a.map{|a| a[1]=a[0]}, prompt.object.field_type)
+            = f.fields_for :prompts, @job.prompts_for_form do |prompt|
+              .field
+                = prompt.label :prompt_label
+                = prompt.text_field :label
+              .field
+                = prompt.label :prompt_type
+                = prompt.select :field_type, options_for_select(Prompt.field_types.to_a.map{|a| a[1]=a[0]}, prompt.object.field_type)
 
-            = prompt.link_to_remove "Remove this prompt"
-        .field
-          = f.link_to_add "Add a prompt", :prompts
-  .row
-    .large-12.columns
-      .actions
-        = f.submit 'Create'
+                = prompt.link_to_remove "Remove this prompt"
+            .field
+              = f.link_to_add "Add a prompt", :prompts
+      .row
+        .large-12.columns
+          .actions
+            = f.submit 'Create Job'

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   post  '/jobs/:id/execute',to: 'runs#create',  as: 'execute_job'
 
   get  '/run/:id/start',to: 'runs#start',  as: 'start_run'
+  get  '/run/:id/stop',to: 'runs#stop',  as: 'stop_run'
 
   resources :users
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }

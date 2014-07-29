@@ -1,5 +1,5 @@
 class RunsController < ApplicationController
-  before_action :set_run, only: [:show, :edit, :update, :destroy]
+  before_action :set_run, only: [:start, :show, :edit, :update, :destroy]
   before_action :authenticate_user!
 
   # GET /runs
@@ -54,15 +54,27 @@ class RunsController < ApplicationController
 
     end
 
-
     respond_to do |format|
       if @run.save
         # Start the run
-        @run.uuid = @run.start
-        format.html { redirect_to @run, notice: 'Run was successfully created.' }
+        format.html { redirect_to start_run_path(@run), notice: 'Run was successfully created.' }
         format.json { render :show, status: :created, location: @run }
       else
         format.html { render :new }
+        format.json { render json: @run.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def start
+    options = @run.inputs.merge({:run_id => @run.id})
+    uuid = @run.start(options)
+    respond_to do |format|
+      if @run.uuid = uuid
+        format.html { redirect_to @run, notice: 'Run was started successfully' }
+        format.json { render :show, status: :created, location: @run }
+      else
+        format.html { render :show }
         format.json { render json: @run.errors, status: :unprocessable_entity }
       end
     end

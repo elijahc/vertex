@@ -1,21 +1,30 @@
-%p#notice= notice
+.row
+  .large-12.columns
+    %p#notice= notice
 
-%p
-  %b Name:
-  = @job.name
-%p
-  %b Core:
-  = @job.core
-%p
-  %b Parser:
-  = @job.parser
+.row
+  .large-12.columns
+    %p
+      %b Name:
+      = @job.name
+    %p
+      %b Core:
+      = @job.core.class_name
+    %p
+      %b Parser:
+      = @job.parser
 
-%p
-  %b Prompts:
-  %ul
-    - @job.prompts.each do |p|
-      %li= "#{p.label} (#{p.field_type})"
+    %p
+      %b Prompts:
+      %ul
+        - @job.prompts.each do |p|
+          %li= "#{p.label} (#{p.field_type})"
 
-= link_to 'Edit', edit_job_path(@job)
-\|
-= link_to 'Jobs list', jobs_path
+.row
+  .large-12.columns
+
+    = link_to 'Edit', edit_job_path(@job), class: 'button small radius'
+    \|
+    = link_to 'Run', run_job_path(@job), class: 'button small radius'
+    \|
+    = link_to 'All Jobs', jobs_path

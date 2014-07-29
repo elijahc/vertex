@@ -1,30 +1,32 @@
-%h1 Listing jobs
+.row
+  .large-12.columns
+    %h1 Listing jobs
 
-%table
-  %tr
-    %th Name
-    %th Core Process
-    %th Parser
-    %th Prompts
-    %th
-    %th
-    %th
+    %table
+      %tr
+        %th Name
+        %th Core Process
+        %th Parser
+        %th Prompts
+        %th
+        %th
+        %th
 
-  - @jobs.each do |job|
-    %tr
-      %td= job.name
-      %td= job.core.class_name if job.core
-      %td= job.parser
-      %td
-        %ul
-          - job.prompts.each do |prompt|
-            %li= prompt.label
+      - @jobs.each do |job|
+        %tr
+          %td= job.name
+          %td= job.core.class_name if job.core
+          %td= job.parser
+          %td
+            %ul
+              - job.prompts.each do |prompt|
+                %li= prompt.label
 
-      %td= link_to 'Run', run_job_path(job)
-      %td= link_to 'Share', "/jobs/#{job.id}/share_to/user/"
-      %td= link_to 'Edit', edit_job_path(job)
-      %td= link_to 'Destroy', job, :method => :delete, :data => { :confirm => 'Are you sure?' }
+          %td= link_to 'Run', run_job_path(job)
+          %td= link_to 'Share', "/jobs/#{job.id}/share_to/user/"
+          %td= link_to 'Edit', edit_job_path(job)
+          %td= link_to 'Destroy', job, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
-%br
-
-= link_to 'New Job', new_job_path
+.row
+  .large-12.columns
+    = link_to 'New Job', new_job_path

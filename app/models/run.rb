@@ -22,9 +22,15 @@ class Run < ActiveRecord::Base
     Sidekiq::Status::status uuid
   end
 
-  def start
-    klass = Module.const_get(job.core.class_name)
-    self.uuid  = klass.perform_async({ :run_id=>id }.merge(self.inputs))
-    self.save
+  def core
+    Module.const_get(job.core.class_name)
+  end
+
+  def start(*args)
+    ActiveRecord::Base.transaction do
+      new_uuid = core.perform_async(*args)
+      update_column(:uuid, new_uuid)
+    end
+    uuid
   end
 end

@@ -15,10 +15,15 @@
       %td= run.id
       %td= link_to run.job.name, job_path(run.job_id)
       %td= run.status
-      %td= link_to 'Start', start_run_path(run)
-      %td= link_to 'Show',  run
-      %td= link_to 'Edit',  edit_run_path(run)
-      %td= link_to 'Destroy', run, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to 'Show',  run, class: "button tiny radius"
+      %td= link_to 'Edit',  edit_run_path(run), class: "button tiny radius"
+      %td
+        - case run.status.to_s
+        - when 'working'
+          = link_to 'Stop', stop_run_path(run), class:"button radius tiny alert"
+        - else
+          = link_to '(Re)Start', start_run_path(run), class:"button radius tiny"
+      %td= link_to 'Destroy', run, :method => :delete, class: 'button tiny alert'
 
 %br
 

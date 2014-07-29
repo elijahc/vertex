@@ -4,7 +4,11 @@ class BsiSpecimenPipeline < Pipeline::Base
   include Sidekiq::Worker
   include Sidekiq::Status::Worker
   sidekiq_options :retry => false
-
+  REQUIRED_PARAMS = {
+    'bsi_username' => 'text_field',
+    'bsi_password' => 'password_field',
+    'bsi_instance' => 'text_field',
+  }
 
   def perform(options)
     total 100
@@ -16,17 +20,16 @@ class BsiSpecimenPipeline < Pipeline::Base
     ap options
 
     key = {
-      :user   => 'ecog_bot',
-      :pass   => ENV['ECOG_BOT_PASS'],
-      :server => 'PCF',
-      :url    => 'https://websvc-mirror.bsisystems.com:2271/bsi/xmlrpc'
+      :user   => options['bsi_username'],
+      :pass   => options['bsi_password'],
+      :server => 'PCF'
     }
 
     run = Run.find(options['run_id'])
     file_path = "public/"+options['specimen_file']['file']['url']
 
     self.parser   = Module.const_get("Pipeline::Parser::#{run.job.parser}").new
-    self.importer = SpecimenImporter.new(key)
+    self.importer = SpecimenImporter.new(key, instance: options['instance'])
 
     at 20, 'Parsing...'
     specimens = parse(file_path, options)
@@ -34,5 +37,9 @@ class BsiSpecimenPipeline < Pipeline::Base
     import(specimens, options)
 
     at 100, 'Job Complete'
+  end
+
+  def self.required_prompts
+    REQUIRED_PARAMS
   end
 end
