@@ -6,7 +6,7 @@ gem 'rails', '4.1.1'
 # Use Foreman as a process manager
 gem 'foreman'
 # Use thin as a webserver
-gem 'thin'
+gem 'thin', group: :development
 # Use Foundation as a frontend
 gem 'foundation-rails'
 # Use nested_form for handling polymorphic job/dependency relationship
@@ -67,8 +67,8 @@ gem 'rails_12factor', group: :production
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Use unicorn as the app server
-# gem 'unicorn'
+# Use unicorn as the production app server
+gem 'unicorn', group: :production
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
