@@ -6,10 +6,6 @@ class Job < ActiveRecord::Base
   belongs_to :core
   validates_presence_of :core_id
 
-  has_many :dependencies, as: :attachable
-  accepts_nested_attributes_for :dependencies, :allow_destroy => true
-  validates_associated :dependencies
-
   has_and_belongs_to_many :users
 
   has_many :runs

@@ -1,18 +1,6 @@
 .row
   .large-12.columns
-    %p#notice= notice
-.row
-  .large-12.columns
     %h1 #{@user.name}
-    %h3 Linked BSI Accounts
-    %table
-      %thead
-        %tr
-          %th BSI Username
-          %th Verified?
-          %th Actions
-
-
 .row
   .large-12.columns
     = link_to 'Edit', edit_user_path(@user)

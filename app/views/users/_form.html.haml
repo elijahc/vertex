@@ -6,5 +6,28 @@
         - @user.errors.full_messages.each do |msg|
           %li= msg
 
-  .actions
-    = f.submit 'Save'
+  .row
+    .large-12.columns
+      = f.label       :first_name
+      = f.text_field  :first_name
+
+  .row
+    .large-12.columns
+      = f.label       :last_name
+      = f.text_field  :last_name
+
+  .row
+    .large-12.columns
+      = f.label       :email
+      = f.text_field  :email, class: 'disabled'
+
+  .row
+    .large-12.columns
+      = f.label     :approved
+      = f.check_box :approved
+
+
+  .row
+    .large-12.columns
+      .actions
+        = f.submit 'Save', class: 'button success'

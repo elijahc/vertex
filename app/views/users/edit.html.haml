@@ -1,7 +1,11 @@
-%h1 Editing user
+.row
+  .large-12.columns
+    %h1 Editing user
 
 = render 'form'
 
-= link_to 'Show', @user
-\|
-= link_to 'Back', users_path
+.row
+  .large-12.columns
+    = link_to 'Show', @user
+    \|
+    = link_to 'Back', users_path

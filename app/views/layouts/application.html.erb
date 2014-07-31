@@ -29,17 +29,23 @@
             <li class="has-dropdown">
               <a href=""><%= "#{current_user.first_name} #{current_user.last_name}" %></a>
               <ul class="dropdown">
-                <li><a href="/users/<%= current_user.id %>">Profile</a></li>
+                <li><a href="/users">Manage Users</a></li>
                 <li><a href="/users/<%= current_user.id %>/jobs">Jobs</a></li>
                 <li><a href="/sign_out">Logout</a></li>
               </ul>
             </li>
           <% else %>
-            <li><a href="/users/auth/google_oauth2">Login</a></li>
+            <li><a href="/sign_in">Login</a></li>
           <% end %>
         </ul>
       </section>
     </nav>
+    <% flash.each do |name, msg| %>
+      <div class="alert-box <%= name%>">
+        <%= msg %>
+        <a href="#" class="close">&times;</a>
+      </div>
+    <% end %>
     <%= yield %>
     <%= javascript_include_tag "application" %>
   </body>

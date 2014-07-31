@@ -10,12 +10,3 @@ cores = ['BsiSpecimenPipeline', 'SleepJob']
 (cores - Core.all.map{|c| c.class_name}).each do |c|
   Core.create({class_name: c})
 end
-
-bsi_instances = [
-  {:name => 'Mirror', :url => 'https://websvc-mirror.bsisystems.com:2271/bsi/xmlrpc'},
-  {:name => 'Production', :url => 'https://websvc.bsisystems.com:2262/bsi/xmlrpc'}
-]
-
-bsi_instances.each do |instance|
-  BsiInstance.create(instance)
-end

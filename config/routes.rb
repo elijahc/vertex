@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :cores
-
   resources :runs
 
   root to: "home#index"
@@ -15,10 +13,11 @@ Rails.application.routes.draw do
   get  '/run/:id/stop',to: 'runs#stop',  as: 'stop_run'
 
   resources :users
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, skip: [:sessions], :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   get   '/users/:id/jobs',  to: 'users#jobs',   as: 'user_jobs'
 
   devise_scope :user do
+    get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 

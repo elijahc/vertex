@@ -2,6 +2,12 @@
 
 en:
   devise:
+    registrations:
+      user:
+        signed_up_but_not_approved: 'You have signed up successfully but your account has not been approved by your administrator yet'
+    failure:
+      user:
+        not_approved: 'Your account has not been approved by your administrator yet.'
     confirmations:
       confirmed: "Your account was successfully confirmed."
       send_instructions: "You will receive an email with instructions about how to confirm your account in a few minutes."

@@ -11,40 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140728193058) do
-
-  create_table "bsi_accounts", force: true do |t|
-    t.string   "username"
-    t.binary   "password"
-    t.binary   "anfangvektor"
-    t.boolean  "verified"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "bsi_instances", force: true do |t|
-    t.string   "url"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(version: 20140730205248) do
 
   create_table "cores", force: true do |t|
     t.string   "class_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "dependencies", force: true do |t|
-    t.text     "description"
-    t.string   "lib"
-    t.integer  "attachable_id"
-    t.string   "attachable_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "dependencies", ["attachable_id", "attachable_type"], name: "index_dependencies_on_attachable_id_and_attachable_type"
 
   create_table "jobs", force: true do |t|
     t.string   "name"
@@ -99,6 +72,9 @@ ActiveRecord::Schema.define(version: 20140728193058) do
     t.datetime "updated_at"
     t.string   "provider"
     t.string   "uid"
+    t.boolean  "approved",   default: false, null: false
   end
+
+  add_index "users", ["approved"], name: "index_users_on_approved"
 
 end
