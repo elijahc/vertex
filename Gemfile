@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.1'
 # Use Foreman as a process manager
-gem 'foreman'
+gem 'foreman', group: :development
 # Use thin as a webserver
 gem 'thin', group: :development
 # Use Foundation as a frontend
@@ -31,6 +31,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'devise'
 # Use Omniauth for auth
 gem 'omniauth-google-oauth2'
+gem 'omniauth-github'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 # Carrierwave for ephemeral upload management and background processing
@@ -43,11 +44,6 @@ gem 'sidekiq-status'
 gem 'rbc'
 gem 'etl-pipeline', group: :development
 gem 'bsi-pipeline', group: :development
-gem 'roo'
-gem 'chronic'
-gem 'resque'
-gem 'resque-status'
-gem 'gibberish'
 
 ### Development gems ###
 gem 'awesome_print', group: :development

@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :jobs
 
+  has_many :identities
+
   enum status: [:pending, :active, :revoked]
 
   def active_for_authentication?
@@ -20,6 +22,10 @@ class User < ActiveRecord::Base
   def self.new_with_session(params, session)
     super.tap do |user|
     end
+  end
+
+  def self.create_with_omniauth(info)
+    create(name: info['name'])
   end
 
   def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
